@@ -1,6 +1,5 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QComboBox, QPushButton, QWidget, QLabel, QSpinBox
-from PyQt5.QtCore import Qt, QTimer
+from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QComboBox, QPushButton, QWidget, QSpinBox
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 import random
@@ -118,6 +117,7 @@ class SortingVisualizer(QMainWindow):
     def merge_sort(self):
         data = self.data.copy()
         self._merge_sort(data, 0, len(data) - 1)
+        self.update_plot(data)
     
     def _merge_sort(self, data, low, high):
         if low < high:
@@ -139,18 +139,31 @@ class SortingVisualizer(QMainWindow):
                 data[k] = right[j]
                 j += 1
             k += 1
+        
+        # Copy the remaining elements of left and right subarrays
+        while i < len(left):
+            data[k] = left[i]
+            i += 1
+            k += 1
+        
+        while j < len(right):
+            data[k] = right[j]
+            j += 1
+            k += 1
+        
         # Update plot once after merging
         self.update_plot(data)
     
     def quick_sort(self):
         data = self.data.copy()
         self._quick_sort(data, 0, len(data) - 1)
+        self.update_plot(data)
     
     def _quick_sort(self, data, low, high):
-        if low < high:
+        while low < high:
             pivot = self._partition(data, low, high)
-            self._quick_sort(data, low, pivot)
-            self._quick_sort(data, pivot + 1, high)
+            self._quick_sort(data, low, pivot - 1)
+            low = pivot + 1
         # Update plot after each partition step
         self.update_plot(data)
     
