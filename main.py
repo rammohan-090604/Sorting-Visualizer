@@ -139,13 +139,13 @@ class SortingVisualizer(QMainWindow):
                 data[k] = right[j]
                 j += 1
             k += 1
-        
+        self.update_plot(data)
         # Copy the remaining elements of left and right subarrays
         while i < len(left):
             data[k] = left[i]
             i += 1
             k += 1
-        
+        self.update_plot(data)
         while j < len(right):
             data[k] = right[j]
             j += 1
@@ -174,8 +174,10 @@ class SortingVisualizer(QMainWindow):
         while True:
             while i <= j and data[i] <= pivot:
                 i += 1
+                self.update_plot(data)
             while i <= j and data[j] >= pivot:
                 j -= 1
+                self.update_plot(data)
             if i <= j:
                 data[i], data[j] = data[j], data[i]
             else:
